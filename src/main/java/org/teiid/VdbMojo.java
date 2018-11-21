@@ -36,7 +36,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -60,7 +59,7 @@ public class VdbMojo extends AbstractMojo {
     @Parameter( defaultValue = "${basedir}/src/main/vdb" )
     private String vdbFolder;
 
-    @Component
+    @Parameter( defaultValue = "${project}", readonly = true )
     private MavenProject project;
 
     @Parameter(property = "project.build.directory", readonly = true)
@@ -105,7 +104,7 @@ public class VdbMojo extends AbstractMojo {
                 Set<Artifact> dependencies = project.getDependencyArtifacts();
                 for (Artifact d : dependencies) {
 
-                    if (!d.getFile().getName().endsWith(".vdb")) {
+                    if (d.getFile() == null || !d.getFile().getName().endsWith(".vdb")) {
                         continue;
                     }
 
@@ -162,6 +161,7 @@ public class VdbMojo extends AbstractMojo {
             add(archive, "", directories.toArray(new File[directories.size()]));
 
             File finalVDB = new File("target", "vdb.xml");
+            finalVDB.getParentFile().mkdirs();
             VDBMetadataParser.marshell(top, new FileOutputStream(finalVDB));
             addFile(archive, "META-INF/vdb.xml", finalVDB);
 
