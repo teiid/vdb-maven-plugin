@@ -105,6 +105,10 @@ public class VdbMojo extends AbstractMojo {
                 gatherContents(this.classesDirectory, directories);
                 gatherContents(this.vdbFolder, directories);
 
+                if (includes != null) {
+                    add(archive, "", includes);
+                }
+
                 // do not allow vdb-import in the case of VDB represented with .ddl
                 if (vdb.getName().endsWith("-vdb.ddl")) {
                     addFile(archive, "META-INF/vdb.ddl", vdb);
@@ -269,7 +273,7 @@ public class VdbMojo extends AbstractMojo {
             if (file.isDirectory()) {
                 this.add(archive, name + SLASH, Objects.requireNonNull(file.listFiles()));
             } else {
-                if (!name.endsWith("vdb.xml")) {
+                if (!name.endsWith("vdb.xml") && !name.endsWith("vdb.ddl")) {
                     addFile(archive, name, file);
                 }
             }
