@@ -1,4 +1,4 @@
-# VDB Maven Plugin
+# VDB Maven Plugin (replaced with new version https://github.com/teiid/teiid-spring-boot/tree/master/tools/vdb-plugin )
 
 A Maven PlugIn to build a VDB file. Thorntail only allows ZIP archive based artifact deployment when a VDB needs to be deployed with Thorntail Teiid. This Maven plugin has packaging type of "vdb" can be defined in a pom.xml as
 
